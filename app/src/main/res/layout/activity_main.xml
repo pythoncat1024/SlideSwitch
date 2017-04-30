@@ -8,7 +8,8 @@
     <com.python.cat.slideswitchlib.SlideSwitch
         android:id="@+id/slide_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#f00" />
 
 
 </RelativeLayout>
