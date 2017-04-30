@@ -20,11 +20,6 @@ import com.apkfuns.logutils.LogUtils;
 
 public class SlideSwitch extends View {
 
-    private int currentX;
-    private boolean isTouching = false;
-    private int backGroundWidth;
-    private int frontWidth;
-
     public enum State {
         OPEN, CLOSE
     }
@@ -39,6 +34,12 @@ public class SlideSwitch extends View {
         void onCheckedChanged(SlideSwitch buttonView, boolean isOpened);
     }
 
+    private int currentX;
+    private boolean isTouching = false;
+    private int backGroundWidth;
+    private int frontWidth;
+
+
     private Bitmap mBackBmp;
     private Bitmap mFrontBmp;
 
@@ -46,15 +47,18 @@ public class SlideSwitch extends View {
 
     private OnCheckedChangeListener mListener;
 
+    @SuppressWarnings("unused")
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
         this.mListener = listener;
     }
 
+    @SuppressWarnings("unused")
     public void setSwitchState(State state) {
         this.switchState = state;
         postInvalidate();
     }
 
+    @SuppressWarnings("unused")
     public void setBackGroundBmp(int resId) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
         if (bitmap != null) {
@@ -63,6 +67,7 @@ public class SlideSwitch extends View {
         postInvalidate();
     }
 
+    @SuppressWarnings("unused")
     public void setFrontBmp(int resId) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
         if (bitmap != null) {
