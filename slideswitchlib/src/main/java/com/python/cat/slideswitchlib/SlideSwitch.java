@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.apkfuns.logutils.LogUtils;
 
 /**
  * packageName: com.python.cat.slideswitchlib
@@ -20,10 +20,11 @@ import com.apkfuns.logutils.LogUtils;
 
 public class SlideSwitch extends View {
 
+    @SuppressWarnings("WeakerAccess")
     public enum State {
         OPEN, CLOSE
     }
-
+    @SuppressWarnings("WeakerAccess")
     public interface OnCheckedChangeListener {
         /**
          * Called when the checked state of a compound button has changed.
@@ -108,7 +109,7 @@ public class SlideSwitch extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(mBackBmp, 0, 0, null);
-        LogUtils.e("state = " + switchState);
+        Log.e("SlideSwitch","state = "+switchState);
         if (isTouching) {
             // ###################
             if (currentX < frontWidth / 2) {
