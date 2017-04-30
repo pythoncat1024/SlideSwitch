@@ -6,6 +6,8 @@ import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import com.apkfuns.logutils.LogUtils;
+
 /**
  * packageName: com.python.cat.slideswitch.base
  * Created on 2017/4/30.
@@ -17,6 +19,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LogUtils.getLogConfig().configShowBorders(false);
         register();
     }
 
