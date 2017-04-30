@@ -14,14 +14,16 @@ import android.view.View;
 
 public class SlideSwitch extends View {
     public SlideSwitch(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public SlideSwitch(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public SlideSwitch(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+
 }
