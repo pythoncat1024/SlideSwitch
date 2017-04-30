@@ -29,10 +29,26 @@ public class SlideSwitch extends View {
         OPEN, CLOSE
     }
 
+    public interface OnCheckedChangeListener {
+        /**
+         * Called when the checked state of a compound button has changed.
+         *
+         * @param buttonView The compound button view whose state has changed.
+         * @param isOpened   The new opened state of buttonView.
+         */
+        void onCheckedChanged(SlideSwitch buttonView, boolean isOpened);
+    }
+
     private Bitmap mBackBmp;
     private Bitmap mFrontBmp;
 
     private State switchState = State.CLOSE;
+
+    private OnCheckedChangeListener mListener;
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        this.mListener = listener;
+    }
 
     public void setSwitchState(State state) {
         this.switchState = state;
@@ -114,12 +130,11 @@ public class SlideSwitch extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        currentX = Math.round(event.getX());
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 isTouching = true;
-                break;
-            case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
@@ -130,12 +145,15 @@ public class SlideSwitch extends View {
                 } else {
                     switchState = State.CLOSE;
                 }
+                if (mListener != null) {
+                    mListener.onCheckedChanged(this, switchState == State.OPEN);
+                }
                 break;
             default:
                 break;
         }
-        currentX = Math.round(event.getX());
         invalidate();
         return true;
     }
+
 }
