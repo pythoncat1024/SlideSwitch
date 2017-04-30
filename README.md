@@ -21,7 +21,7 @@ android 自定义控件 滑动开关
 
 	    ```gradle
 	    dependencies {
-		        compile 'com.github.pythoncat1024:SlideSwitch:1.0.0'
+		         compile 'com.github.pythoncat1024:SlideSwitch:1.0.1'
 		  }
 	    ```
     * Step 3. use in xml
