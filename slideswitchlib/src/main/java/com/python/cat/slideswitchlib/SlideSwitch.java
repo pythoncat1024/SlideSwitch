@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.apkfuns.logutils.LogUtils;
+
 /**
  * packageName: com.python.cat.slideswitchlib
  * Created on 2017/4/30.
@@ -20,8 +22,10 @@ public class SlideSwitch extends View {
 
     private int currentX;
     private boolean isTouching = false;
+    private int backGroundWidth;
+    private int frontWidth;
 
-    private enum State {
+    public enum State {
         OPEN, CLOSE
     }
 
@@ -32,6 +36,7 @@ public class SlideSwitch extends View {
 
     public void setSwitchState(State state) {
         this.switchState = state;
+        postInvalidate();
     }
 
     public void setBackGroundBmp(int resId) {
@@ -39,6 +44,7 @@ public class SlideSwitch extends View {
         if (bitmap != null) {
             this.mBackBmp = bitmap;
         }
+        postInvalidate();
     }
 
     public void setFrontBmp(int resId) {
@@ -46,6 +52,7 @@ public class SlideSwitch extends View {
         if (bitmap != null) {
             this.mFrontBmp = bitmap;
         }
+        postInvalidate();
     }
 
     public SlideSwitch(Context context) {
@@ -67,6 +74,12 @@ public class SlideSwitch extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        backGroundWidth = mBackBmp.getWidth();
+        frontWidth = mFrontBmp.getWidth();
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(mBackBmp.getWidth(), mBackBmp.getHeight());
     }
@@ -74,33 +87,27 @@ public class SlideSwitch extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(mBackBmp, 0, 0, null);
-
-        int backGroundWidth = mBackBmp.getWidth();
-        int frontWidth = mFrontBmp.getWidth();
+        LogUtils.e("state = " + switchState);
         if (isTouching) {
+            // ###################
+            if (currentX < frontWidth / 2) {
+                canvas.drawBitmap(mFrontBmp, 0, 0, null);
+            } else if (currentX > backGroundWidth - frontWidth / 2) {
+                canvas.drawBitmap(mFrontBmp, backGroundWidth - frontWidth, 0, null);
+            } else {
+                canvas.drawBitmap(mFrontBmp, currentX - frontWidth / 2, 0, null);
+            }
+        } else {
             switch (switchState) {
                 case OPEN:
-                    // todo
+                    canvas.drawBitmap(mFrontBmp, backGroundWidth - frontWidth, 0, null);
                     break;
                 case CLOSE:
                 default:
-                    // todo
-                    if (currentX < frontWidth / 2) {
-                        canvas.drawBitmap(mFrontBmp, 0, 0, null);
-                    } else if (currentX > backGroundWidth - frontWidth / 2) {
-                        canvas.drawBitmap(mFrontBmp, backGroundWidth - frontWidth, 0, null);
-                    } else {
-                        canvas.drawBitmap(mFrontBmp, currentX - frontWidth / 2, 0, null);
-                    }
-
+                    canvas.drawBitmap(mFrontBmp, 0, 0, null);
                     break;
             }
-        } else {
-            if (currentX < backGroundWidth / 2) {
-                canvas.drawBitmap(mFrontBmp, 0, 0, null);
-            } else {
-                canvas.drawBitmap(mFrontBmp, backGroundWidth - frontWidth, 0, null);
-            }
+
         }
 
     }
@@ -117,6 +124,12 @@ public class SlideSwitch extends View {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 isTouching = false;
+                // change state !
+                if (currentX > backGroundWidth / 2) {
+                    switchState = State.OPEN;
+                } else {
+                    switchState = State.CLOSE;
+                }
                 break;
             default:
                 break;
